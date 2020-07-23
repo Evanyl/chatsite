@@ -23,12 +23,12 @@ io.sockets.on('connection', socket => {
 		updateUsernames();
 		connections.splice(connections.indexOf(socket), 1);
 		console.log('Disconnected: %s sockets connected', connections.length);
+		io.sockets.emit('alert disconnected user', socket.username);
 	});
 
 	// Send Message
 
 	socket.on('send message', data => {
-		console.log(data);
 		io.sockets.emit('new message', {msg: data, user: socket.username});
 	})
 
@@ -39,7 +39,14 @@ io.sockets.on('connection', socket => {
 		socket.username = data;
 		users.push(socket.username);
 		updateUsernames();
+		io.sockets.emit('alert new user', socket.username);
 	})
+
+	// Send heart
+
+	socket.on('send heart', data => {
+		io.sockets.emit('display heart', data);
+	});
 
 	let updateUsernames = () => {
 		io.sockets.emit('get users', users);
