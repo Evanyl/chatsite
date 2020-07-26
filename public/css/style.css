@@ -204,6 +204,10 @@ ul {
 		display: block;
 	}
 
+	.chat-form-container {
+		display: block;
+	}
+
 	.chat-sidebar {
 		display: none;
 	}
