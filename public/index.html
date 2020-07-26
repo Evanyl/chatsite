@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+	<link rel="stylesheet" href="css/style.css" />
+	<title>Evan's Chatsite</title>
+</head>
+<body>
+	<div class="login-app">
+		<header class="login-header">
+			<h1>Evan's Chatsite</h1>
+		</header>
+		<main class="login-main">
+			<form action="chat.html">
+				<div class="form-element">
+					<label for="usename">Username</label>
+					<input 
+						type="text" 
+						name="username" 
+						id="username" 
+						placeholder="Please enter your display name" 
+						required />
+				</div>
+				<div class="form-element">
+					<label for="room">Room</label>
+					<select name="room" id="room">
+						<option value="Talking">Talking</option>
+						<option value="Planning">Planning</option>
+					</select>
+				</div>
+
+				<button type="submit" class="button">Join</button>
+			</form>
+		</main>
+	</div>
+</body>
+
+</html>

@@ -1,18 +1,20 @@
 {
-  "name": "socket_chat",
+  "name": "chatsite",
   "version": "1.0.0",
-  "description": "Simple chat app",
+  "description": "A chat webapp that uses socket.io, express, and node to allow bidirectional chat with chatroom support.",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server",
+    "dev": "nodemon server"
   },
   "author": "Evan Liu",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
-    "socket.io": "*",
-    "express": "*"
+    "express": "^4.17.1",
+    "moment": "^2.27.0",
+    "socket.io": "^2.3.0"
   },
-  "engines": {
-    "node": "*"
+  "devDependencies": {
+    "nodemon": "^2.0.4"
   }
 }

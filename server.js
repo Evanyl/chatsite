@@ -1,54 +1,61 @@
-let express = require('express');
-let app = express();
-let server = require('http').createServer(app);
+const path = require('path');
+const http = require('http');
+const express = require('express');
+const socketio = require('socket.io');
+const formatMessage = require('./utils/messages');
+const { userJoin, getCurrentUser, userLeave, getRoomUsers } = require('./utils/users');
 
-let io = require('socket.io').listen(server);
-let users = [];
-let connections = [];
 
-server.listen(process.env.PORT || 3000);
-console.log('Server running');
+const app = express();
+const server = http.createServer(app);
+const io = socketio(server);
 
-app.get('/', (req, res) => {
-	res.sendFile(__dirname + '/index.html');
-});
+// Set static folder
+app.use(express.static(path.join(__dirname, 'public')));
 
-io.sockets.on('connection', socket => {
-	connections.push(socket);
-	console.log('Connected: %s sockets conected', connections.length);
+const adminName = 'Kanye';
 
-	// Disconnect
-	socket.on('disconnect', data => {
-		users.splice(users.indexOf(socket.username), 1);
-		updateUsernames();
-		connections.splice(connections.indexOf(socket), 1);
-		console.log('Disconnected: %s sockets connected', connections.length);
-		io.sockets.emit('alert disconnected user', socket.username);
+// Run when client connects
+io.on('connection', socket => {
+	socket.on('joinRoom', ({username, room}) => {
+		const user = userJoin(socket.id, username, room);
+
+		socket.join(user.room);
+
+		// Broadcast when a user connects
+		io
+			.to(user.room)
+			.emit('message', formatMessage(adminName, ` ${user.username} has joined the chat.`));
+
+		// Send users and room info
+		io.to(user.room).emit('roomUsers', {
+			room: user.room,
+			users: getRoomUsers(user.room)
+		});
+	});
+	
+	// Listen for chat message
+	socket.on('chatMessage', (msg) => {
+		const user = getCurrentUser(socket.id);
+
+		io.to(user.room).emit('message', formatMessage(user.username, msg));
 	});
 
-	// Send Message
+	// Runs when client disconnects
+	socket.on('disconnect', () => {
+		const user = userLeave(socket.id);
 
-	socket.on('send message', data => {
-		io.sockets.emit('new message', {msg: data, user: socket.username});
-	})
+		if(user) {
+			io.to(user.room).emit('message', formatMessage(adminName, `${user.username} has left the chat.`));
 
-	// New User
-
-	socket.on('new user', (data, callback) => {
-		callback = true;
-		socket.username = data;
-		users.push(socket.username);
-		updateUsernames();
-		io.sockets.emit('alert new user', socket.username);
-	})
-
-	// Send heart
-
-	socket.on('send heart', data => {
-		io.sockets.emit('display heart', data);
+			io.to(user.room).emit('roomUsers', {
+				room: user.room,
+				users: getRoomUsers(user.room)
+			});
+		}
 	});
-
-	let updateUsernames = () => {
-		io.sockets.emit('get users', users);
-	}
 });
+
+const PORT = process.env.PORT || 3000;
+
+server.listen(PORT, () => console.log(`Server running on port: ${PORT}`));
