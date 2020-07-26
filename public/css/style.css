@@ -211,7 +211,7 @@ ul {
 
 @media (max-height: 800px) {
 	.chat-messages {
-		height: 400px;
+		height: 350px;
 	}
 }
 
