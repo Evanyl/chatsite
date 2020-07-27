@@ -48,7 +48,7 @@ ul {
 	background: var(--dark-header-color);
 	color: var(--text);
 	border: 0;
-	font-size: 0.95rem;
+	font-size: 0.95em;
 	font-weight: bold;
 	border-radius: 0;
 }
@@ -122,7 +122,7 @@ ul {
 
 .chat-header h1 {
 	margin-left: 15px;
-	font-size: 2.5rem;
+	font-size: 2.5em;
 }
 
 .chat-main {
@@ -161,17 +161,17 @@ ul {
 }
 
 .chat-messages .message {
-	padding: 10px;
-	margin-bottom: 15px;
+	padding: 0.55em;
+	margin-bottom: 0.8em;
 	border-radius: 5px;
 }
 
 .chat-messages .message .meta {
-	font-size: 0.8rem;
+	font-size: 0.8em;
 	font-weight: bold;
 	opacity: 0.7;
 	color: var(--meta);
-	margin-bottom: 7px;
+	margin-bottom: 0.2em;
 } 
 
 .chat-messages .message .meta span {
@@ -188,7 +188,7 @@ ul {
 }
 
 .chat-form-container input {
-	font-size: 1rem;
+	font-size: 1em;
 	padding: 5px;
 	height: 40px;
 	flex: 1;
@@ -215,6 +215,10 @@ ul {
 
 	body {
 		font-size: 16px;
+	}
+
+	.chat-header h1 {
+		font-size: 2em;
 	}
 }
 
