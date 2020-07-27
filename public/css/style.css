@@ -208,6 +208,10 @@ ul {
 		display: block;
 	}
 
+	.button {
+		display: block;
+	}
+
 	.chat-sidebar {
 		display: none;
 	}
